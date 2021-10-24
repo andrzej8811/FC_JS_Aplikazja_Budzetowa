@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Projekt_JS_1_BudzetDomowy</title>
+    <link rel="stylesheet" href="Style.css" />
+  </head>
+  <body>
+    <div class="Logo">Logo</div>
+    <div class="Tytul">Domowy budżet</div>
+    <div class="Budget">
+      <div class="Przychody">
+        <h3>Przychody:</h3>
+        <form id="incomeForm">
+          <input type="text" name="name" placeholder="name" value="Przychód" />
+          <input type="text" name="amount" placeholder="amount" value="100" />
+          <input type="submit" value="Dodaj Przychód" />
+        </form>
+        <ul id="incomes"></ul>
+        <div class="suma">Suma Przychodów: <span id="incomesTotal"></span></div>
+      </div>
+      <div class="Wydatki">
+        <h3>Wydatki:</h3>
+        <form id="outcomeForm">
+          <input type="text" name="name" placeholder="name" value="Wydatek" />
+          <input type="text" name="amount" placeholder="amount" value="100" />
+          <input type="submit" value="Dodaj Wydatek" />
+        </form>
+        <ul id="outcomes"></ul>
+        <div class="suma">Suma Wydatków: <span id="outcomesTotal"></span></div>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
