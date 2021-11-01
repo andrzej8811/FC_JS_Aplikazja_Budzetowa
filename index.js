@@ -247,7 +247,7 @@ const viewRender = () => {
 };
 
 // EVENT LISTENERS
-outcomeForm.addEventListener("submit", addOutcome, function(event) {
+outcomeForm.addEventListener("submit", addOutcome, function (event) {
 event.preventDefault()});
 
 
