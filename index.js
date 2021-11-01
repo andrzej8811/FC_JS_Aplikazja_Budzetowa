@@ -124,3 +124,133 @@ incomeForm.addEventListener("submit", addIncome);
 // render the App
 viewRender();
 viewRenderIncomesTotal();
+
+
+const outcomeForm = qs("#outcomeForm");
+const outcomesDOM = qs("#outcomes");
+const outcomesTotalDOM = qs("#outcomesTotal");
+
+// DATA / MODEL
+let outcomes = [
+  // {
+  //   id: 101,
+  //   name: "name.value",
+  //   amount: 100,
+  // }
+];
+let outcomesTotal = 0;
+let nextId = 0;
+
+// UTILITIES FUNCTIONS
+const createId = () => {
+  nextId++;
+  return nextId;
+};
+
+// INCOME FUNCTIONS
+
+const addOutcome = (e) => {
+  e.preventDefault();
+  const id = createId();
+  const { name, amount } = e.currentTarget.elements;
+  const newOutcome = {
+    id,
+    name: name.value,
+    amount: Number(amount.value),
+  };
+  outcomes.push(newOutcome);
+  viewRender();
+  viewRenderOutcomesTotal();
+};
+
+const deleteOutcome = (li, id) => {
+  // set incomes to all incomes minus the deleted one
+  outcomes = outcomes.filter((outcome) => outcome.id !== id);
+  li.remove();
+  viewRenderOutcomesTotal();
+};
+
+const editOutcome = (li, id, name, amount, deleteBtn, editBtn) => {
+  li.innerHTML = "";
+
+  // EDIT FORM
+  const nameOutput = d.createElement("output");
+  const amountOutput = d.createElement("output");
+  // set inputs to current (old) values
+  nameOutput.value = name;
+  amountOutput.value = amount;
+  li.appendChild(nameOutput);
+  li.appendChild(amountOutput);
+
+  // CONFIRM
+  const confirmBtn = d.createElement("button");
+  confirmBtn.textContent = "confirm";
+  li.appendChild(confirmBtn);
+  confirmBtn.addEventListener("click", (e) =>
+    confirmEdit(li, id, nameOutput, amountOutput, deleteBtn, editBtn)
+  );
+};
+
+const confirmEdit = (li, id, nameOutput, amountOutput, deleteBtn, editBtn) => {
+  // get current (new) values from inputs
+  const newName = nameOutput.value;
+  const newAmount = Number(amountOutput.value);
+  li.textContent = `(${id}) ${newName} :: ${newAmount}`;
+  li.appendChild(deleteBtn);
+  li.appendChild(editBtn);
+  outcomes = outcomes.map((outcome) =>
+    outcome.id === id
+      ? { ...outcome, name: newName, amount: newAmount }
+      : outcome
+  );
+  viewRenderOutcomesTotal();
+};
+
+const addOutcomeToDOM = ({ id, name, amount }) => {
+  // CREATE
+  const li = d.createElement("li");
+  li.dataset.id = id;
+  li.dataset.name = name;
+  li.dataset.amount = amount;
+  li.textContent = `(${id}) ${name} :: ${amount}`;
+
+  // DELETE
+  const deleteBtn = d.createElement("button");
+  deleteBtn.textContent = "delete";
+  deleteBtn.addEventListener("click", (e) => deleteOutcome(li, id));
+  li.appendChild(deleteBtn);
+
+  // EDIT
+  const editBtn = d.createElement("button");
+  editBtn.textContent = "edit";
+  editBtn.addEventListener("click", (e) =>
+    editOutcome(li, id, name, amount, deleteBtn, editBtn)
+  );
+  li.appendChild(editBtn);
+
+  // CREATE ENDS HERE
+  // add one income to DOM
+  outcomesDOM.append(li);
+};
+
+// VIEW
+const viewRenderOutcomesTotal = () => {
+  outcomesTotal = outcomes.reduce((acc, i) => acc + i.amount, 0);
+  outcomesTotalDOM.textContent = `${outcomesTotal}`;
+};
+
+const viewRender = () => {
+  // reset incomes in DOM
+  outcomesDOM.innerHTML = "";
+  // add all incomes to DOM
+  outcomes.forEach(addOutcomeToDOM);
+};
+
+// EVENT LISTENERS
+outcomeForm.addEventListener("submit", addOutcome, function(event) {
+event.preventDefault()});
+
+
+// render the App
+viewRender();
+viewRenderOutcomesTotal();
